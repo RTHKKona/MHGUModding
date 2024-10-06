@@ -1,0 +1,29 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: *.fup
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    char magic[4];
+    int version;
+    int intCount;
+    int floatCount;
+    int vecCount;
+} FUPHeader;
+
+typedef struct {
+    float X<bgcolor=0x8888FF>, Y<bgcolor=0x88FF88>, Z<bgcolor=0xFF8888>;
+} Vec3<read=Str("%.2f %.2f %.2f", this.X, this.Y, this.Z)>;
+
+FUPHeader header;
+int ints[header.intCount]<bgcolor=0xffeba2>;
+float floats[header.floatCount]<bgcolor=0x3fcde4>;
+Vec3 vectors[header.vecCount];

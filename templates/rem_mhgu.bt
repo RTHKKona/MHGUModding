@@ -1,0 +1,34 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.rem
+//  ID Bytes: 00 00 80 3F
+//   History: 
+//------------------------------------------------
+
+#include "item_name_mhgu.bt"
+
+typedef struct {
+    ubyte mFlag;
+    ubyte mFlagNum;
+} Flag<read=Str("%u, %u", this.mFlag, this.mFlagNum)>;
+
+typedef struct {
+    uint16 mItemId;
+    ubyte mAmount;
+    ubyte mRate;
+} Entry<read=Str("%u - %ux %s", this.mRate, this.mAmount, getItemName(this.mItemId))>;
+
+typedef struct {
+    Flag flags[8];
+    Entry entries[40];
+} cRem;
+
+float version;
+int count;
+cRem rem[count]<optimize=false>;

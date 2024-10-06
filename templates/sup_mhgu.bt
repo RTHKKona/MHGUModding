@@ -1,0 +1,28 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.sup
+//  ID Bytes: 00 00 80 3F
+//   History: 
+//------------------------------------------------
+
+#include "item_name_mhgu.bt"
+
+typedef struct {
+    uint16 mItemId;
+    ubyte mAmount;
+    ubyte mLabel;
+} Item<read=Str("%u - %ux %s", this.mLabel, this.mAmount, getItemName(this.mItemId))>;
+
+typedef struct {
+    Item mItems[40];
+} cSupp;
+
+float version;
+int count;
+cSupp supp[count];

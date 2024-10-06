@@ -1,0 +1,127 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.mib
+//  ID Bytes: 00 00 4B 43
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    byte mIsClearParam;
+    uint16 mClearID;
+    uint16 mClearNum;
+} ClearCond;
+
+typedef struct {
+    byte mSuppLabel;
+    byte mSuppType;
+    uint16 mSuppTarget;
+    uint16 mSuppTargetNum;
+} Supplies;
+
+typedef struct {
+    uint16 mMonsterId;
+    ubyte mSubType;
+    byte mAuraType;
+    ubyte mRestoreNum;
+    ubyte mVitalTblNo;
+    ubyte mAttackTblNo;
+    ubyte mOtherTblNo;
+    ubyte mDifficulty;
+    uint16 mScale;
+    ubyte mScaleTbl;
+    ubyte mStaminaTbl;
+} Monster;
+
+typedef struct {
+    byte mSetType;
+    uint16 mSetTargetID;
+    uint16 mSetTargetNum;
+} EmSet;
+
+typedef struct {
+    byte mAppearType;
+    uint16 mAppearTargetType;
+    uint16 mAppearTargetNum;
+} Appear;
+
+typedef struct {
+    uint32 mGmdTypeHash;
+    char mPath[16];
+} GMD<read=Str("%s", this.mPath)>;
+
+typedef struct {
+    uint32 mIndex;
+    uint32 mQuestId;
+    byte mQuestType;
+    byte mRequestVillage;
+    byte mQuestLv;
+    byte mMonsterLv;
+    byte mMapNo;
+    byte mStartType;
+    byte mQuestTime;
+    byte mQuestLife;
+    byte mAcEquipSetNo;
+    byte mBGMType;
+    byte mEntryType_1;
+    byte mEntryType_2;
+    byte mEntryType_Combo;
+    byte mClearType;
+    byte mGekitaiHp;
+    ClearCond mClearCond_1;
+    ClearCond mClearCond_2;
+    ClearCond mClearCond_Sub;
+    byte mHagiLv;
+    byte mPickLv;
+    byte mFishingLv;
+    int32 mContract;
+    int32 mVillagePoint;
+    int32 mRemMoney;
+    int32 mSubRemMoney;
+    int32 mClearRemVillagePoint;
+    int32 mFailedRemVillagePoint;
+    int32 mSubRemVillagePoint;
+    int32 mClearRemHunterPoint;
+    int32 mSubRemHunterPoint;
+    byte mRemAddFrame[2];
+    byte mRemAddLotMax;
+    Supplies mSupplies[2];
+    Monster mMonsters[5];
+    ubyte mZakoHP;
+    ubyte mZakoAttack;
+    ubyte mZakoOther;
+    EmSet mEmSet_2;
+    EmSet mEmSet_3;
+    byte mBossRushType;
+    Appear mAppear[5];
+    ubyte mStrayRand;
+    ubyte mStrayStartTime;
+    ubyte mStrayStartRand;
+    byte mStrayLimit_3;
+    byte mStrayLimit_4;
+    byte mStrayLimit_5;
+    ubyte mStrayRand_3;
+    ubyte mStrayRand_4;
+    ubyte mStrayRand_5;
+    ubyte mExtraTicketNum;
+    ubyte mIcons[5];
+    uint32 mProgNo;
+    GMD mMsg_eng;
+    GMD mMsg_fre;
+    GMD mMsg_ger;
+    GMD mMsg_ita;
+    GMD mMsg_spa;
+    GMD mMsg_chT;
+    GMD mMsg_chS;
+    int32 mVillagePointG;
+    uint16 mFlag<format=binary>;
+} cQuestData;
+
+float magic;
+int questCount;
+cQuestData quest[questCount]<optimize=false>;

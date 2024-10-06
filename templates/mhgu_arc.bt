@@ -1,0 +1,43 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+
+typedef struct {
+    char magic[4];
+    short version;
+    short fileCount;
+    FSkip(4);
+} ArcHeader;
+
+local uint64 pos;
+typedef struct {
+    char path[64];
+    uint extHash;
+    uint compSize;
+    uint realSize : 24;
+    uint unk0 : 8;
+    uint offset;
+    
+    pos = FTell();
+    FSeek(offset);
+    ubyte data[compSize];
+    FSeek(pos);
+} FileEntry<read=this.path>;
+
+typedef struct(int size) {
+    ubyte data[size];
+} DataEntry;
+
+ArcHeader header;
+FileEntry entries[header.fileCount]<optimize=false>;
+

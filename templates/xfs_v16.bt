@@ -1,0 +1,37 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: XFS Version 16
+//   Authors: Fexty
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 58 46 53 00 10 00
+//   History: 
+//------------------------------------------------
+
+#include "Mt.h"
+
+typedef struct {
+    char magic[4];
+    short version;
+    short type;
+    int64 classCount;
+    int defCount;
+    int defSize;
+} XFSHeader;
+
+typedef struct {
+    
+} PROPERTYDATA;
+
+typedef struct {
+    uint dtiHash;
+    uint propNum : 15;
+    uint : 17;
+    uint nameOffset;
+    
+} OBJECTDATA;
+
+XFSHeader header;

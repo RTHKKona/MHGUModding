@@ -1,0 +1,87 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.ape
+//  ID Bytes: 00 00 00 40
+//   History: 
+//------------------------------------------------
+
+#include "item_name_mhgu.bt"
+
+typedef enum<ubyte> {
+    Greatsword = 7,
+    SwordAndShield = 8,
+    Hammer = 9,
+    Lance = 10,
+    HeavyBowgun = 11,
+    LightBowgun = 13,
+    LongSword,
+    SwitchAxe,
+    GunLance,
+    Bow,
+    DualBlades,
+    HuntingHorn,
+    InsectGlaive,
+    ChargeBlade,
+    Prowler
+} WeaponType;
+
+typedef struct {
+    uint16 mEqNo;
+    ubyte mEqLv;
+    uint16 mDecos[3];
+} EquipPiece;
+
+typedef struct {
+    uint16 mItemId;
+    ubyte mAmount;
+} Item<read=Str("%ux %s", this.mAmount, getItemName(this.mItemId))>;
+
+typedef struct {
+    WeaponType mWepType;
+    ubyte mWepLv;
+    uint16 mWepId;
+    uint16 mWepDecos[3];
+    ubyte mCustomAttr;
+    ubyte mStyle;
+    uint16 mHunterArts[3];
+    ubyte mCharmSkill1;
+    byte mCharmSkillPoint1;
+    ubyte mCharmSkill2;
+    byte mCharmSkillPoint2;
+    ubyte mInsId;
+    ubyte mInsLv;
+    ubyte mInsPower;
+    ubyte mInsTough;
+    ubyte mInsSpeed;
+    ubyte mInsFire;
+    ubyte mInsWater;
+    ubyte mInsElec;
+    ubyte mInsIce;
+    ubyte mInsDragon;
+    EquipPiece mEqPieces[6]<bgcolor=0x4f3ac3>;
+    Item mItems[32]<bgcolor=0x6bcd13>;
+} EquipSet<read=Str("%s", EnumToString(this.mWepType))>;
+
+typedef struct {
+    uint32 mQuestId<bgcolor=0xfe45bc>;
+    ubyte mPlayerCount<bgcolor=0x565fae>;
+    uint32 mRankTime[3]<bgcolor=0x1299bd>;
+    uint32 mRankPoints[3]<bgcolor=0xf24356>;
+    EquipSet mSets[5]<bgcolor=0x45ffc2>;
+    ubyte mHunterArtsX1Flag;
+    ubyte mHunterArtsX2Flag;
+    ubyte mHunterArtsX3Flag;
+} cAcPlayerEquip<read=Str("q%d, %dp, [%dm, %dm, %dm]",
+    this.mQuestId, this.mPlayerCount, 
+    this.mRankTime[0] / 60, this.mRankTime[1] / 60, this.mRankTime[2] / 60)>;
+
+
+float version;
+int count;
+cAcPlayerEquip acEquip[count]<optimize=false>;

@@ -1,0 +1,26 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.slt
+//  ID Bytes: 00 00 80 3F
+//   History: 
+//------------------------------------------------
+
+#include "item_name_mhgu.bt"
+
+typedef struct {
+    uint32 mIndex;
+    int32 mItemId;
+    int32 mUnlockFlag;
+    int32 mUnlockFlag2;
+} ShopListEntry<read=Str("%s", getItemName(this.mItemId))>;
+
+
+float version;
+int count;
+ShopListEntry entries[count];

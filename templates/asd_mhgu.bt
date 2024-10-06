@@ -1,0 +1,71 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.asd
+//  ID Bytes: 00 00 18 42
+//   History: 
+//------------------------------------------------
+
+#include "armor_name_mhgu.bt"
+
+typedef struct {
+    uint16 mSkillId;
+    byte mPoints;
+} Skill<read=Str("%u: %+d", this.mSkillId, this.mPoints)>;
+
+typedef struct {
+    uint32 mIndex;
+    uint16 mSortId;
+    byte mEnableParts[5]; // bool
+    uint16 mModel;
+    byte mMaleWearable; // bool
+    byte mFemaelWearable; // bool
+    byte mBladeWearable; // bool
+    byte mGunnerWearable; // bool
+    uint32 mPrice;
+    byte mUniqueResist;
+    ubyte mUniqueResistId;
+    byte mFireRes;
+    byte mWaterRes;
+    byte mThunderRes;
+    byte mIceRes;
+    byte mDragonRes;
+    Skill mHeadSkills[5];
+    Skill mTorsoSkills[5];
+    Skill mArmSkills[5];
+    Skill mWaistSkills[5];
+    Skill mLegSkills[5];
+    ubyte mRarity;
+    ubyte mMaxLv;
+    ubyte mMaxLvForLimit;
+    ubyte mDef;
+    ubyte mDefLvUpTblIndex;
+    ubyte mHeadSlotNum;
+    ubyte mTorsoSlotNum;
+    ubyte mArmSlotNum;
+    ubyte mWaistSlotNum;
+    ubyte mLegSlotNum;
+    byte mSymbolCol;
+    byte mUniqueBaseColorMale;
+    ubyte mUniqueBaseColorIdMale;
+    ubyte mBaseColMale;
+    byte mUniqueBaseColorFemale;
+    ubyte mUniqueBaseColorIdFemale;
+    ubyte mBaseColFemale;
+    ubyte mSeTypeMale;
+    byte mUniqueSeTypeMale;
+    ubyte mUniqueSeTypeIdMale;
+    ubyte mSeTypeFemale;
+    byte mUniqueSeTypeFemale;
+    ubyte mUniqueSeTypeIdFemale;
+    ubyte mGimmickDispType;
+} Armor<read=Str("%s", getArmorName(this.mIndex))>;
+
+float version;
+int count;
+Armor armor[count];

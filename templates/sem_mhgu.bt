@@ -1,0 +1,24 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.sem
+//  ID Bytes: 00 00 80 3F
+//   History: 
+//------------------------------------------------
+
+
+typedef struct {
+    uint mRoundNo;
+    uint mAreaNo;
+    float mAngle;
+    float X, Y, Z;
+} SetEmMain;
+
+float magic;
+int count;
+SetEmMain setEmMain[count];

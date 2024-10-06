@@ -1,0 +1,40 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+
+typedef struct {
+    char magic[4];
+    int version;
+    int unk1;
+    int64 unk2;
+    int unk3;
+    int count;
+    int unk4[3];
+} Header;
+
+typedef struct {
+    string data;
+} Entry<read=this.data>;
+
+Header header;
+Entry entries[header.count]<optimize=false>;
+
+local int i;
+local int j;
+for (i = 1; i < header.count; i += 10) {
+    j = i;
+    while (entries[j].data == "(None)" && j < (i + 5)) {
+        j++;
+    }
+    Printf("%d: %s\n", i / 10, entries[j].data);
+}

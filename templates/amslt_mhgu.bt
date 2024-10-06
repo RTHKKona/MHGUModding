@@ -1,0 +1,23 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.amslt
+//  ID Bytes: 00 00 F0 41
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    ubyte mProb_0Slots;
+    ubyte mProb_1Slot;
+    ubyte mProb_2Slots;
+    ubyte mProb_3Slots;
+} SlotProbability<read=Str("%d %d %d %d", this.mProb_0Slots, this.mProb_1Slot, this.mProb_2Slots, this.mProb_3Slots)>;
+
+float version;
+int count;
+SlotProbability prob[count];

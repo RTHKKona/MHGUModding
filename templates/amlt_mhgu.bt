@@ -1,0 +1,22 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.amlt
+//  ID Bytes: 00 00 F0 41
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    uint32 mIndex;
+    uint32 mPrice;
+    ubyte mRarity;
+} CharmType<read=Str("[%u] - %uz, R%u", this.mIndex, this.mPrice, this.mRarity + 1)>;
+
+float version;
+int count;
+CharmType charm[count];

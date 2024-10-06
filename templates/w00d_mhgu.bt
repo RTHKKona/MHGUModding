@@ -1,0 +1,39 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.w00d
+//  ID Bytes: 66 66 06 40
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    ubyte mLv;
+    ubyte mId;
+} Derive;
+
+typedef struct {
+    uint32 mIndex;
+    uint16 mModelId;
+    uint16 mSrqrNo;
+    ubyte mSndMaterial;
+    ubyte mMaxLv;
+    ubyte mMaxLvForLimit;
+    ubyte mRare;
+    uint32 mPrice;
+    ubyte mPriceChangeLv;
+    ubyte mElement;
+    ubyte mColorIndex;
+    uint16 mSortID;
+    ubyte mNamed;
+    ubyte mSpecialSkill;
+    Derive mDerive[5];
+} Weapon00BaseData;
+
+float version;
+int count;
+Weapon00BaseData mBaseData[count];

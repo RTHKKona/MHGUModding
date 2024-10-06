@@ -1,0 +1,18 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.w00m
+//  ID Bytes: 00 00 00 40
+//   History: 
+//------------------------------------------------
+
+
+float version;
+int count;
+
+int mIndex[count];

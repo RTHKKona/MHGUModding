@@ -1,0 +1,53 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+#include "item_name_mhgu.bt"
+
+typedef enum<byte> {
+    Rarity1,
+    Rarity2,
+    Rarity3,
+    Rarity4,
+    Rarity5,
+    Rarity6,
+    Rarity7,
+    Rarity8,
+    Rarity9,
+    Rarity10,
+    Rarity11,
+    Rarity12
+} Rarity;
+
+typedef struct {
+    float magic;
+    int count;
+} Header;
+
+typedef struct {
+    int id;
+    byte unk0;
+    Rarity rarity;
+    byte maxCarry;
+    uint16 unk1;
+    byte unk2[7];
+    byte icon;
+    byte iconColor;
+    byte unk2_1;
+    uint32 sellPrice;
+    uint32 buyPrice;
+    byte unk5;
+    uint16 unk6[8];
+} Item<read=Str("%d, %s", this.id, getItemName(this.id))>;
+
+Header header;
+Item items[header.count]<optimize=false>;

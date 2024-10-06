@@ -1,0 +1,59 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+
+typedef struct {
+    char magic[4];
+    uint version<format=hex>;
+    int count;
+    FSkip(4);
+} HDPHeader;
+
+typedef struct {
+    int16 hunterArts;
+    int16 unk;
+    int16 alchemy;
+    int16 valor;
+} GaugeGen<bgcolor=0xdd34a2>;
+
+typedef struct {
+    int16 unk0<bgcolor=0xffffff>;
+    int16 hitboxId;
+    int16 motionValue<bgcolor=0xff>;
+    int16 unk3;
+    byte unk4[4];
+    int16 damageType<bgcolor=0xffff>; //1=blunt,2=sever
+    int16 unk4_0;
+    int16 unk6;
+    int16 unk7[3];
+    int32 unk8[2];
+    byte unk9[2];
+    ubyte ko<bgcolor=0x3fff3e>;
+    byte unk9_0[2];
+    byte hitlagFrames;
+    byte weaponGaugeGen<bgcolor=0xde34fe>;
+    byte exhaust;
+    float ailmentMod;
+    float partMod;
+    GaugeGen gaugeGen;
+} HitData<read=Str("MV:%d, HL:%d (%.2fs), [%d, %d] unk4:[%d,%d,%d,%d], unk9_0:[%d,%d]", 
+    this.motionValue, this.hitlagFrames, framesToSeconds(this.hitlagFrames), this.unk0, this.hitboxId,
+    this.unk4[0], this.unk4[1], this.unk4[2], this.unk4[3],
+    this.unk9_0[0], this.unk9_0[1])>;
+
+HDPHeader header;
+HitData data[header.count]<optimize=false>;
+
+float framesToSeconds(byte frames) {
+    return (float)frames / 30.0f;
+}

@@ -1,0 +1,31 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: 
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.w00d
+//  ID Bytes: 9A 99 99 3F
+//   History: 
+//------------------------------------------------
+
+
+typedef struct {
+    uint32 mIndex;
+    ubyte mNo;
+    ubyte mLevel;
+    ubyte mSharpnessType;
+    ubyte mSharpnessLevel;
+    int16 mRaw;
+    ubyte mDefense;
+    byte mAffinity;
+    int16 mElement;
+    ubyte mSlotCount;
+} cWeapon00LevelData;
+
+
+float version;
+int count;
+cWeapon00LevelData levelData[count];
