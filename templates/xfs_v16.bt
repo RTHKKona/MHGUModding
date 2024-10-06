@@ -11,7 +11,87 @@
 //   History: 
 //------------------------------------------------
 
-#include "Mt.h"
+#define HEADER_SIZE 0x18
+
+typedef enum<ubyte> {
+    DTI_TYPE_UNDEFINED = 0x0,
+    DTI_TYPE_CLASS = 0x1,
+    DTI_TYPE_CLASSREF = 0x2,
+    DTI_TYPE_BOOL = 0x3,
+    DTI_TYPE_U8 = 0x4,
+    DTI_TYPE_U16 = 0x5,
+    DTI_TYPE_U32 = 0x6,
+    DTI_TYPE_U64 = 0x7,
+    DTI_TYPE_S8 = 0x8,
+    DTI_TYPE_S16 = 0x9,
+    DTI_TYPE_S32 = 0xA,
+    DTI_TYPE_S64 = 0xB,
+    DTI_TYPE_F32 = 0xC,
+    DTI_TYPE_F64 = 0xD,
+    DTI_TYPE_STRING = 0xE,
+    DTI_TYPE_COLOR = 0xF,
+    DTI_TYPE_POINT = 0x10,
+    DTI_TYPE_SIZE = 0x11,
+    DTI_TYPE_RECT = 0x12,
+    DTI_TYPE_MATRIX = 0x13,
+    DTI_TYPE_VECTOR3 = 0x14,
+    DTI_TYPE_VECTOR4 = 0x15,
+    DTI_TYPE_QUATERNION = 0x16,
+    DTI_TYPE_PROPERTY = 0x17,
+    DTI_TYPE_EVENT = 0x18,
+    DTI_TYPE_GROUP = 0x19,
+    DTI_TYPE_PAGE_BEGIN = 0x1A,
+    DTI_TYPE_PAGE_END = 0x1B,
+    DTI_TYPE_EVENT32 = 0x1C,
+    DTI_TYPE_ARRAY = 0x1D,
+    DTI_TYPE_PROPERTYLIST = 0x1E,
+    DTI_TYPE_GROUP_END = 0x1F,
+    DTI_TYPE_CSTRING = 0x20,
+    DTI_TYPE_TIME = 0x21,
+    DTI_TYPE_FLOAT2 = 0x22,
+    DTI_TYPE_FLOAT3 = 0x23,
+    DTI_TYPE_FLOAT4 = 0x24,
+    DTI_TYPE_FLOAT3x3 = 0x25,
+    DTI_TYPE_FLOAT4x3 = 0x26,
+    DTI_TYPE_FLOAT4x4 = 0x27,
+    DTI_TYPE_EASECURVE = 0x28,
+    DTI_TYPE_LINE = 0x29,
+    DTI_TYPE_LINESEGMENT = 0x2A,
+    DTI_TYPE_RAY = 0x2B,
+    DTI_TYPE_PLANE = 0x2C,
+    DTI_TYPE_SPHERE = 0x2D,
+    DTI_TYPE_CAPSULE = 0x2E,
+    DTI_TYPE_AABB = 0x2F,
+    DTI_TYPE_OBB = 0x30,
+    DTI_TYPE_CYLINDER = 0x31,
+    DTI_TYPE_TRIANGLE = 0x32,
+    DTI_TYPE_CONE = 0x33,
+    DTI_TYPE_TORUS = 0x34,
+    DTI_TYPE_ELLIPSOID = 0x35,
+    DTI_TYPE_RANGE = 0x36,
+    DTI_TYPE_RANGEF = 0x37,
+    DTI_TYPE_RANGEU16 = 0x38,
+    DTI_TYPE_HERMITECURVE = 0x39,
+    DTI_TYPE_ENUMLIST = 0x3A,
+    DTI_TYPE_FLOAT3x4 = 0x3B,
+    DTI_TYPE_LINESEGMENT4 = 0x3C,
+    DTI_TYPE_AABB4 = 0x3D,
+    DTI_TYPE_OSCILLATOR = 0x3E,
+    DTI_TYPE_VARIABLE = 0x3F,
+    DTI_TYPE_VECTOR2 = 0x40,
+    DTI_TYPE_MATRIX33 = 0x41,
+    DTI_TYPE_RECT3D_XZ = 0x42,
+    DTI_TYPE_RECT3D = 0x43,
+    DTI_TYPE_RECT3D_COLLISION = 0x44,
+    DTI_TYPE_PLANE_XZ = 0x45,
+    DTI_TYPE_RAY_Y = 0x46,
+    DTI_TYPE_POINTF = 0x47,
+    DTI_TYPE_SIZEF = 0x48,
+    DTI_TYPE_RECTF = 0x49,
+    DTI_TYPE_EVENT64 = 0x4A,
+    DTI_TYPE_END = 0x4B,
+    DTI_TYPE_CUSTOM = 0x80
+} DtiType;
 
 typedef struct {
     char magic[4];
@@ -23,15 +103,114 @@ typedef struct {
 } XFSHeader;
 
 typedef struct {
+    uint nameOffset<bgcolor=0xEEBB99>;
     
-} PROPERTYDATA;
+    local int64 ofs = FTell();
+    FSeek(HEADER_SIZE + nameOffset);
+    string name<bgcolor=0x00FF00>;
+    FSeek(ofs);
+    
+    DtiType type<bgcolor=0x0000EE>;
+    ubyte attr<bgcolor=0xEEEE44,format=hex>;
+    ushort bytes : 15;
+    ushort disable : 1;
+    uint64 _pad[4]<hidden=true,bgcolor=0x777777>;
+} PROPERTYDATA<read=Str("%s (%s)", this.name, EnumToString(this.type))>;
 
 typedef struct {
-    uint dtiHash;
+    uint dtiHash<format=hex>;
     uint propNum : 15;
     uint : 17;
-    uint nameOffset;
-    
+    PROPERTYDATA props[propNum]<optimize=false>;    
 } OBJECTDATA;
 
+typedef struct(int count) {
+    int offset;
+    FSeek(FTell() - 4 + offset);
+    OBJECTDATA objects[count]<optimize=false>;
+} OBJECTDATALIST;
+
 XFSHeader header;
+OBJECTDATALIST defs(header.defCount);
+
+struct SerializedObject;
+
+typedef struct {
+    short type;
+    short var;
+    if (type == 0x7FFF || type & 1 == 0) {
+        return;
+    }
+    
+    uint size;
+    SerializedObject obj(type >> 1);
+} ClassRef;
+
+typedef struct {
+    string value;
+} STRVAL<read=this.value>;
+
+typedef struct(DtiType type) {
+    local DtiType t = type;
+    switch (type) {
+        case DTI_TYPE_CLASS:
+        case DTI_TYPE_CLASSREF:
+            ClassRef class;
+            break;
+        case DTI_TYPE_U32: uint value; break;
+        case DTI_TYPE_S32: int value; break;
+        case DTI_TYPE_U16: ushort value; break;
+        case DTI_TYPE_BOOL: ubyte value; break;
+        case DTI_TYPE_F32: float value; break;
+        case DTI_TYPE_CUSTOM:
+            ubyte strCount;
+            local int k;
+            for (k = 0; k < strCount; k++) {
+                STRVAL value;
+            }
+            break;
+        default: Printf("%s not handled\n", EnumToString(type)); char value; break;
+    }
+} SerializedData<read=readSerializedData>;
+
+typedef struct(int index) {
+    local int id = index;
+    local int i;
+    for (i = 0; i < defs.objects[id].propNum; i++) {
+        struct {
+            int count;
+            local DtiType type = defs.objects[id].props[i].type;
+            local string name = defs.objects[id].props[i].name;
+            local int j;
+            for (j = 0; j < count; j++) {
+                SerializedData data(type)<optimize=false>;
+            }
+            //SerializedData data(type)[count]<optimize=false>;
+        } field<read=Str("%s (%s)", this.name, EnumToString(this.type))>;
+    }
+} SerializedObject;
+
+FSeek(HEADER_SIZE + header.defSize);
+ClassRef root;
+
+string readSerializedData(SerializedData& d) {
+    switch (d.t) {
+        case DTI_TYPE_U32: return Str("%u", d.value);
+        case DTI_TYPE_S32: return Str("%i", d.value);
+        case DTI_TYPE_U16: return Str("%hu", d.value);
+        case DTI_TYPE_BOOL: return Str("%s", d.value ? "true" : "false");
+        case DTI_TYPE_F32: return Str("%.2f", d.value);
+        case DTI_TYPE_CUSTOM:
+            if (d.strCount == 1) {
+                return d.value;
+            } else if (d.strCount == 2) {
+                return Str("%s - %s", d.value[0].value, d.value[1].value);
+            } else {
+                return Str("%d", d.strCount);
+            }
+            break;
+        default: return Str("%s not handled\n", EnumToString(d.t)); break;
+    }
+    
+    return "";
+}
