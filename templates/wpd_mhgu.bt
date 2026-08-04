@@ -1,0 +1,37 @@
+//------------------------------------------------
+//--- 010 Editor v14.0 Binary Template
+//
+//      File: rWeaponProcessData
+//   Authors: Fexty
+//   Version: 1
+//   Purpose: 
+//  Category: 
+// File Mask: *.wpd
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+
+typedef struct {
+    uint16 Id;
+    ubyte Count;
+} Item<read=Str("%d x%d", this.Id, this.Count)>;
+
+typedef struct {
+    uint16 Id;
+    uint16 Count;
+} Piece<read=Str("%d - %d", this.Id, this.Count)>;
+
+typedef struct {
+    uint16 mNo;
+    uint16 mLevel;
+    Item mItems[4];
+    uint16 mCategory;
+    uint16 mRank;
+    Piece mPieces[3];
+} Recipe<read=Str("%d - Lv. %d", this.mNo, this.mLevel)>;
+
+
+float v;
+uint entryCount;
+Recipe recipes[entryCount];
